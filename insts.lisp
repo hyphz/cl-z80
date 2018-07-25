@@ -988,3 +988,46 @@
 (definst (cp iyh) (emit #xfd #xbc))
 (definst (cp ixl) (emit #xdd #xbd))
 (definst (cp iyl) (emit #xfd #xbd))
+
+
+;; Next instructions
+(definst (ldix) (emit #xed #xa4))
+(definst (ldws) (emit #xed #xa5))
+(definst (ldirx) (emit #xed #xb4))
+(definst (lddx) (emit #xed #xac))
+(definst (lddrx) (emit #xed #xbc))
+(definst (ldirscale) (emit #xed #xb6))
+(definst (ldpirx) (emit #xed #xb7))
+(definst (mul d e) (emit #xed #x30))
+(definst (add hl a) (emit #xed #x31))
+(definst (add de a) (emit #xed #x32))
+(definst (add bc a) (emit #xed #x33))
+(definst (add hl num i) (emit #xed #x34 (wl i) (wh i)))
+(definst (add de num i) (emit #xed #x35 (wl i) (wh i)))
+(definst (add bc num i) (emit #xed #x36 (wl i) (wh i)))
+(definst (swapnib) (emit #xed #x23))
+(definst (mirror) (emit #xed #x24))
+(definst (push num i) (emit #xed #x8a (wh i) (wl i))) ;; Yes, it's high-low for some reason..
+(definst (nextreg num r num v) (emit #xed #x91 (bb r) (bb v)))
+(definst (nextreg num r a) (emit #xed #x92 (bb r)))
+(definst (pixeldn) (emit #xed #x93))
+(definst (pixelad) (emit #xed #x94))
+(definst (setae) (emit #xed #x95))
+(definst (test num v) (emit #xed #x27 (bb v)))
+
+(definst (not-nextreg num r num v)
+  (asm-insts `((push bc)
+              (push af)
+              (ld bc #x243b)
+              (ld a ,r)
+              (out (c) a)
+              (ld bc #x253b)
+              (ld a ,v)
+              (out (c) a)
+              (pop af)
+              (pop bc))))
+
+
+
+
+
